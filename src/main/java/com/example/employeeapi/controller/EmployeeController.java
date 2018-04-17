@@ -1,6 +1,8 @@
 package com.example.employeeapi.controller;
 
 import com.example.employeeapi.datasource.EmployeeRepository;
+import com.example.employeeapi.datasource.TestEmployeeRepository;
+import com.example.employeeapi.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -8,18 +10,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
-@EnableAutoConfiguration
 public class EmployeeController {
-    @Autowired
+
     private EmployeeRepository employeeRepository;
 
+    public EmployeeController() {
+        employeeRepository=new TestEmployeeRepository();
+    }
+
     @RequestMapping("/employees")
-    String getEmployees(Model model) {
+   public String getEmployees(Model model) {
+        List<Employee> employees=employeeRepository.getAllEmployees();
 
-        model.addAttribute("message", "hello world");
-
+//        return new ModelAndView("employees");
+        model.addAttribute("employees", employees);
+//
         return "employees";
     }
 
